@@ -1,0 +1,17 @@
+{
+  "name": "Kalady Grama Panchayat WebGIS",
+  "short_name": "Kalady GIS",
+  "description": "Geographical Resource Mapping for Kalady Grama Panchayat, Ernakulam, Kerala",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#103c30",
+  "theme_color": "#155b42",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "./lsgd-logo.png",
+      "sizes": "228x135",
+      "type": "image/png"
+    }
+  ]
+}

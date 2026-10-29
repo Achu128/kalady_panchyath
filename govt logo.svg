@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+  <defs>
+    <radialGradient id="emblemBg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#195941" />
+      <stop offset="85%" stop-color="#103c30" />
+      <stop offset="100%" stop-color="#09221b" />
+    </radialGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fdf3cd" />
+      <stop offset="40%" stop-color="#d9b66f" />
+      <stop offset="100%" stop-color="#9a742c" />
+    </linearGradient>
+  </defs>
+
+  <!-- Outer Ring -->
+  <circle cx="80" cy="80" r="76" fill="url(#emblemBg)" stroke="url(#goldGrad)" stroke-width="4"/>
+  <circle cx="80" cy="80" r="68" fill="none" stroke="url(#goldGrad)" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <circle cx="80" cy="80" r="54" fill="#0d3127" stroke="url(#goldGrad)" stroke-width="2"/>
+
+  <!-- Ashoka Lion Capital (Stylized Top) -->
+  <g transform="translate(80, 42) scale(0.65)" fill="url(#goldGrad)" text-anchor="middle">
+    <!-- Base pedestal -->
+    <rect x="-18" y="2" width="36" height="5" rx="1"/>
+    <circle cx="0" cy="4" r="2.5" fill="#103c30"/>
+    <!-- Central lion head -->
+    <path d="M-6,-18 C-6,-22 -2,-24 0,-24 C2,-24 6,-22 6,-18 C8,-15 7,-10 5,-6 L5,2 L-5,2 L-5,-6 C-7,-10 -8,-15 -6,-18 Z"/>
+    <!-- Left lion -->
+    <path d="M-7,-16 C-11,-18 -15,-15 -15,-11 C-15,-7 -12,-4 -9,-1 L-6,2 L-4,0 Z"/>
+    <!-- Right lion -->
+    <path d="M7,-16 C11,-18 15,-15 15,-11 C15,-7 12,-4 9,-1 L6,2 L4,0 Z"/>
+  </g>
+
+  <!-- Left Elephant -->
+  <g transform="translate(48, 82) scale(0.48)" fill="url(#goldGrad)">
+    <path d="M12,20 C8,15 5,10 5,0 C5,-12 14,-22 26,-22 C34,-22 40,-16 42,-8 C44,-4 46,2 48,10 L48,25 L40,25 L39,12 L32,12 L31,25 L24,25 L24,8 C21,6 18,7 16,10 L16,25 L10,25 Z"/>
+    <!-- Trunk -->
+    <path d="M5,-2 C0,2 -3,10 -2,18 C-1,22 3,24 5,20 C6,17 3,12 5,6 Z"/>
+    <!-- Tusk -->
+    <path d="M7,6 C4,9 3,15 7,16 C8,14 7,10 9,7 Z" fill="#ffffff"/>
+  </g>
+
+  <!-- Right Elephant -->
+  <g transform="translate(112, 82) scale(-0.48, 0.48)" fill="url(#goldGrad)">
+    <path d="M12,20 C8,15 5,10 5,0 C5,-12 14,-22 26,-22 C34,-22 40,-16 42,-8 C44,-4 46,2 48,10 L48,25 L40,25 L39,12 L32,12 L31,25 L24,25 L24,8 C21,6 18,7 16,10 L16,25 L10,25 Z"/>
+    <!-- Trunk -->
+    <path d="M5,-2 C0,2 -3,10 -2,18 C-1,22 3,24 5,20 C6,17 3,12 5,6 Z"/>
+    <!-- Tusk -->
+    <path d="M7,6 C4,9 3,15 7,16 C8,14 7,10 9,7 Z" fill="#ffffff"/>
+  </g>
+
+  <!-- Sacred Shankha (Conch Shell) Center -->
+  <g transform="translate(80, 80) scale(0.55)" fill="url(#goldGrad)" stroke="#103c30" stroke-width="0.5">
+    <path d="M0,-16 C6,-16 11,-12 11,-5 C11,3 7,12 0,18 C-7,12 -11,3 -11,-5 C-11,-12 -6,-16 0,-16 Z"/>
+    <path d="M0,-14 C3,-14 6,-10 5,-4 C4,2 2,8 0,13 C-2,8 -4,2 -5,-4 C-6,-10 -3,-14 0,-14 Z" fill="#ffffff" opacity="0.85"/>
+    <circle cx="0" cy="-6" r="2.5" fill="url(#goldGrad)"/>
+  </g>
+
+  <!-- Curved Text Path -->
+  <path id="textArcTop" d="M 24,80 A 56,56 0 0,1 136,80" fill="none"/>
+  <path id="textArcBottom" d="M 136,80 A 56,56 0 0,1 24,80" fill="none"/>
+
+  <text font-family="Arial, sans-serif" font-size="7.5" font-weight="bold" fill="url(#goldGrad)" letter-spacing="1.2">
+    <textPath href="#textArcTop" startOffset="50%" text-anchor="middle">
+      GOVERNMENT OF KERALA
+    </textPath>
+  </text>
+  <text font-family="Arial, sans-serif" font-size="7.5" font-weight="bold" fill="#fdf3cd" letter-spacing="1.5">
+    <textPath href="#textArcBottom" startOffset="50%" text-anchor="middle">
+      കേരള സർക്കാർ
+    </textPath>
+  </text>
+</svg>

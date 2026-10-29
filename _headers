@@ -1,0 +1,15 @@
+# Netlify / Cloudflare Pages Optimization Headers
+
+/*
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+
+/sw.js
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/mapsss/proje/qgis2web_2026_10_28-20_19_46_358272/resources/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/mapsss/proje/qgis2web_2026_10_28-20_19_46_358272/layers/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+

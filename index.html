@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Kalady Grama Panchayat | Geographical Resource Mapping</title>
+    <meta name="description" content="Explore the geographical resources of Kalady Grama Panchayat, Ernakulam, Kerala through an interactive WebGIS project.">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#103c30">
+
+    <style>
+        :root {
+            --green: #155b42;
+            --dark-green: #103c30;
+            --light-green: #eaf3ed;
+            --gold: #d9b66f;
+            --text: #26362f;
+            --muted: #65746b;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 100px;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f6f8f5;
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        .container {
+            width: min(1160px, 90%);
+            margin: auto;
+        }
+
+        /* TOP BAR */
+
+        .topbar {
+            background: var(--dark-green);
+            color: #eaf3ed;
+            padding: 8px 0;
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
+        .topbar-inner {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* NAVIGATION */
+
+        .navbar {
+            background: white;
+            border-bottom: 1px solid #e0e8e1;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-inner {
+            min-height: 82px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--dark-green);
+        }
+
+        .brand img {
+            height: 48px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .brand-name {
+            font-size: 17px;
+            font-weight: 800;
+            line-height: 1.3;
+        }
+
+        .brand-subtitle {
+            display: block;
+            font-size: 10px;
+            color: var(--muted);
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #33463b;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .nav-links a:hover {
+            color: #23845b;
+        }
+
+        .nav-links .nav-cta {
+            background: var(--green);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: 0.2s ease;
+        }
+
+        .nav-links .nav-cta:hover {
+            background: #237653;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        /* HERO */
+
+        .hero {
+            background:
+                radial-gradient(circle at 85% 20%,
+                rgba(217,182,111,0.18), transparent 30%),
+                linear-gradient(120deg, #103c30, #1c694b);
+            color: white;
+            padding: 90px 0 85px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border: 1px solid #ffffff25;
+            border-radius: 50%;
+            right: -90px;
+            bottom: -170px;
+            box-shadow:
+                0 0 0 35px #ffffff08,
+                0 0 0 75px #ffffff06;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            border: 1px solid #ffffff66;
+            padding: 6px 13px;
+            border-radius: 30px;
+            color: #f0d99e;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            font-weight: bold;
+            margin-bottom: 22px;
+        }
+
+        .hero h1 {
+            font-size: clamp(34px, 5vw, 60px);
+            line-height: 1.13;
+            max-width: 780px;
+            letter-spacing: -1px;
+            margin-bottom: 22px;
+        }
+
+        .hero h1 span {
+            color: #e6cb88;
+        }
+
+        .hero p {
+            max-width: 680px;
+            color: #e1eee6;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 13px;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 14px 21px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .button-gold {
+            background: var(--gold);
+            color: #23382d;
+        }
+
+        .button-gold:hover {
+            background: white;
+            transform: translateY(-2px);
+        }
+
+        .button-outline {
+            color: white;
+            border: 1px solid #ffffff88;
+        }
+
+        .button-outline:hover {
+            background: white;
+            color: var(--dark-green);
+        }
+
+        /* LOCATION STRIP */
+
+        .location-strip {
+            background: white;
+            border-bottom: 1px solid #e3e9e3;
+        }
+
+        .location-inner {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 23px 0;
+        }
+
+        .location-item {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .location-item strong {
+            display: block;
+            color: var(--dark-green);
+            font-size: 14px;
+        }
+
+        /* GENERAL SECTIONS */
+
+        section.content-section {
+            padding: 75px 0;
+        }
+
+        .section-label {
+            color: #40815d;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .section-title {
+            color: var(--dark-green);
+            font-size: clamp(26px, 3.5vw, 37px);
+            line-height: 1.25;
+            margin-bottom: 18px;
+        }
+
+        .section-intro {
+            color: var(--muted);
+            max-width: 730px;
+            font-size: 15px;
+        }
+
+        /* ABOUT */
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-text p {
+            color: #59675e;
+            font-size: 15px;
+            margin-top: 17px;
+        }
+
+        .image-frame {
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 12px 35px #18412a17;
+        }
+
+        .image-frame img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .image-caption {
+            padding: 13px 8px 5px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        /* PROJECT OBJECTIVES */
+
+        .purpose-section {
+            background: var(--light-green);
+        }
+
+        .purpose-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 35px;
+        }
+
+        .purpose-card {
+            background: white;
+            border: 1px solid #dce8de;
+            padding: 27px;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+
+        .purpose-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 25px #18412a12;
+        }
+
+        .card-number {
+            color: #b18a40;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .purpose-card h3 {
+            color: var(--dark-green);
+            font-size: 18px;
+            margin: 13px 0 9px;
+        }
+
+        .purpose-card p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        /* LOCATION MAP */
+
+        .map-section {
+            background: white;
+        }
+
+        .map-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 45px;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .map-frame {
+            background: #f3f6f2;
+            border: 1px solid #e0e8df;
+            padding: 12px;
+            border-radius: 9px;
+        }
+
+        .map-frame img {
+            width: 100%;
+            max-height: 460px;
+            object-fit: contain;
+            border-radius: 5px;
+        }
+
+        .map-description p {
+            font-size: 15px;
+            color: var(--muted);
+            margin: 15px 0;
+        }
+
+        .map-note {
+            border-left: 3px solid var(--gold);
+            padding: 12px 16px;
+            background: #faf8f0;
+            color: #59675e;
+            font-size: 13px;
+            margin-top: 22px;
+        }
+
+        /* RESOURCE MAP */
+
+        .resource-section {
+            padding: 78px 0;
+            background: var(--dark-green);
+            color: white;
+        }
+
+        .resource-card {
+            display: grid;
+            grid-template-columns: 1.5fr 0.5fr;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .resource-section .section-label {
+            color: #e6cb88;
+        }
+
+        .resource-section h2 {
+            font-size: clamp(28px, 4vw, 42px);
+            line-height: 1.25;
+            margin-bottom: 18px;
+        }
+
+        .resource-section p {
+            color: #d8e7dd;
+            max-width: 700px;
+            margin-bottom: 26px;
+            font-size: 15px;
+        }
+
+        .resource-symbol {
+            font-size: 100px;
+            text-align: center;
+        }
+
+        .resource-details {
+            display: flex;
+            gap: 22px;
+            flex-wrap: wrap;
+            margin-top: 22px;
+            font-size: 12px;
+            color: #d8e7dd;
+        }
+
+        /* OFFICIAL WEBSITE */
+
+        .official-section {
+            padding: 48px 0;
+            background: #eef3ed;
+            text-align: center;
+        }
+
+        .official-section h2 {
+            color: var(--dark-green);
+            font-size: 24px;
+        }
+
+        .official-section p {
+            color: var(--muted);
+            font-size: 14px;
+            margin: 10px 0 18px;
+        }
+
+        .text-link {
+            color: #16724c;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .text-link:hover {
+            text-decoration: underline;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #0b2e24;
+            color: #e1eee6;
+            padding: 35px 0 20px;
+        }
+
+        .footer-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 30px;
+            flex-wrap: wrap;
+            padding-bottom: 25px;
+        }
+
+        .footer-title {
+            font-size: 17px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .footer-text {
+            font-size: 13px;
+            color: #bdcfc3;
+        }
+
+        .footer-contact a {
+            color: #e6cb88;
+            font-size: 13px;
+            word-break: break-all;
+        }
+
+        .footer-contact a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #ffffff25;
+            padding-top: 18px;
+            color: #afc4b6;
+            font-size: 11px;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        /* MOBILE RESPONSIVE */
+
+        @media (max-width: 760px) {
+            .nav-inner {
+                padding: 13px 0;
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .nav-links {
+                gap: 13px;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+            }
+
+            .nav-links .nav-cta {
+                padding: 8px 10px;
+            }
+
+            .hero {
+                padding: 60px 0;
+            }
+
+            .about-grid,
+            .map-grid,
+            .resource-card {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+
+            .purpose-grid {
+                grid-template-columns: 1fr;
+            }
+
+            section.content-section {
+                padding: 52px 0;
+            }
+
+            .image-frame img {
+                height: 270px;
+            }
+
+            .location-inner {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .resource-section {
+                padding: 58px 0;
+            }
+
+            .resource-symbol {
+                display: none;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                width: 92%;
+            }
+
+            .location-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 34px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- TOP BAR -->
+
+    <div class="topbar">
+        <div class="container topbar-inner">
+            <span>GEOGRAPHICAL RESOURCE MAPPING</span>
+            <span>KALADY &middot; ERNAKULAM &middot; KERALA, INDIA</span>
+        </div>
+    </div>
+
+    <!-- NAVIGATION -->
+
+    <nav class="navbar">
+        <div class="container nav-inner">
+
+            <a href="#home" class="brand">
+                <img src="lsgd-logo.png"
+                     alt="Local Self Government Department Logo">
+
+                <span class="brand-name">
+                    KALADY
+                    <span class="brand-subtitle">
+                        GRAMA PANCHAYAT &middot; WEBGIS
+                    </span>
+                </span>
+            </a>
+
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#location">Location</a>
+                <a href="#project">Project</a>
+
+                <a class="nav-cta"
+                   href="mapsss/proje/qgis2web_2026_10_28-20_19_46_358272/index.html"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    Resource Map ↗️
+                </a>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+
+    <header class="hero" id="home">
+        <div class="container">
+
+            <div class="eyebrow">
+                GEOGRAPHY · GIS · LOCAL DEVELOPMENT
+            </div>
+
+            <h1>
+                Understanding Our Land.
+                <span>Mapping Our Resources.</span>
+            </h1>
+
+            <p>
+                A geographical resource-mapping initiative focused on
+                Kalady Grama Panchayat, Ernakulam, Kerala.
+                Explore the area's location, landscape and geographical
+                resources through an interactive WebGIS project.
+            </p>
+
+            <div class="hero-actions">
+                <a class="button button-gold"
+                   href="mapsss/proje/qgis2web_2026_10_28-20_19_46_358272/index.html"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    Explore Resource Map ↗️
+                </a>
+
+                <a class="button button-outline" href="#about">
+                    Discover Kalady ↓
+                </a>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- LOCATION INFORMATION -->
+
+    <div class="location-strip">
+        <div class="container location-inner">
+
+            <div class="location-item">
+                <strong>Location</strong>
+                Ernakulam District
+            </div>
+
+            <div class="location-item">
+                <strong>Administrative Area</strong>
+                Aluva Taluk
+            </div>
+
+            <div class="location-item">
+                <strong>State</strong>
+                Kerala, India
+            </div>
+
+            <div class="location-item">
+                <strong>Project Type</strong>
+                WebGIS Resource Mapping
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ABOUT KALADY -->
+
+    <section class="content-section" id="about">
+        <div class="container about-grid">
+
+            <div class="about-text">
+
+                <div class="section-label">01 / About the Panchayat</div>
+
+                <h2 class="section-title">
+                    Kalady Grama Panchayat
+                </h2>
+
+                <p>
+                    Kalady Grama Panchayat is located in the
+                    eastern part of Ernakulam district,
+                    Kerala, famously renowned as the birthplace of
+                    Sri Adi Shankara and situated on the sacred banks of the Periyar River.
+                    It is part of Aluva Taluk.
+                </p>
+
+                <p>
+                    As a local self-government institution under LSGD Kerala, the
+                    Panchayat plays an essential role in local
+                    administration, civic infrastructure, sanitation,
+                    environmental conservation, water management, and community welfare.
+                </p>
+
+                <p>
+                    Its geographical setting, riverine drainage system, road connectivity,
+                    settlement patterns, and natural resources provide critical baseline
+                    data for spatial analysis and decentralized panchayat-level planning.
+                </p>
+
+            </div>
+
+            <div class="image-frame">
+                <img src="images (19).jpg"
+                     alt="Kalady Grama Panchayat building"
+                     loading="lazy">
+
+                <div class="image-caption">
+                    Kalady Grama Panchayat — local administration
+                    and community development.
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- PROJECT OVERVIEW -->
+
+    <section class="content-section purpose-section" id="project">
+        <div class="container">
+
+            <div class="section-label">02 / Project Overview</div>
+
+            <h2 class="section-title">
+                A Geographical Perspective
+            </h2>
+
+            <p class="section-intro">
+                This WebGIS project presents the spatial
+                characteristics and geographical resources of
+                Kalady Grama Panchayat to support geographical
+                understanding and local-level planning.
+            </p>
+
+            <div class="purpose-grid">
+
+                <article class="purpose-card">
+                    <div class="card-number">01 — LOCATION</div>
+                    <h3>Spatial Understanding</h3>
+                    <p>
+                        Understand the administrative boundaries, ward
+                        divisions, and spatial setting of Kalady Panchayat
+                        through interactive digital maps.
+                    </p>
+                </article>
+
+                <article class="purpose-card">
+                    <div class="card-number">02 — RESOURCES</div>
+                    <h3>Resource Identification</h3>
+                    <p>
+                        Explore mapped geographical features, drainage networks,
+                        roads, geomorphology, geology, and elevation contours
+                        represented in the WebGIS project.
+                    </p>
+                </article>
+
+                <article class="purpose-card">
+                    <div class="card-number">03 — PLANNING</div>
+                    <h3>Local-Level Planning</h3>
+                    <p>
+                        Demonstrate how geographical information
+                        can contribute to understanding local
+                        conditions, environmental management, and planning needs.
+                    </p>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- LOCATION MAP -->
+
+    <section class="content-section map-section" id="location">
+        <div class="container">
+
+            <div class="section-label">03 / Geographic Setting</div>
+
+            <h2 class="section-title">
+                Location of Kalady
+            </h2>
+
+            <p class="section-intro">
+                The location map provides a geographical reference
+                for understanding the Panchayat within
+                Ernakulam district, Kerala.
+            </p>
+
+            <div class="map-grid">
+
+                <div class="map-frame">
+                    <img src="KALADY map.jpeg"
+                         onerror="this.onerror=null; this.src='kal.jpg';"
+                         alt="Location map of Kalady Grama Panchayat"
+                         loading="lazy">
+                </div>
+
+                <div class="map-description">
+
+                    <h3 style="color:#103c30; font-size:23px;">
+                        A Central Kerala Riverine Landscape
+                    </h3>
+
+                    <p>
+                        Kalady is situated in the central
+                        part of Kerala along the banks of the Periyar
+                        River, holding immense cultural, historical, and agricultural significance.
+                    </p>
+
+                    <p>
+                        Its geographical setting provides a valuable
+                        context for examining settlements, transport
+                        connectivity, river hydrology, land use, and other
+                        spatial dynamics in the Periyar river basin.
+                    </p>
+
+                    <div class="map-note">
+                        <strong>Map note:</strong> Refer to the
+                        attached location map and WebGIS layers for the exact
+                        administrative boundary, ward limits, and geographic
+                        position represented in this project.
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- RESOURCE MAP FEATURE -->
+
+    <section class="resource-section">
+        <div class="container resource-card">
+
+            <div>
+                <div class="section-label">04 / Interactive WebGIS</div>
+
+                <h2>
+                    Resource Map of Kalady Grama Panchayat
+                </h2>
+
+                <p>
+                    Explore the geographical resources of Kalady
+                    through the dedicated WebGIS project. Open the
+                    interactive map to visualize spatial layers including
+                    Wards, Contours, Roads, Streams, Geomorphology, Geology,
+                    and Digital Elevation Models (DEM).
+                </p>
+
+                <a class="button button-gold"
+                   href="mapsss/proje/qgis2web_2026_10_28-20_19_46_358272/index.html"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    OPEN RESOURCE MAP ↗️
+                </a>
+
+                <div class="resource-details">
+                    <span>✓ Interactive Web Map</span>
+                    <span>✓ Spatial Exploration</span>
+                    <span>✓ QGIS2Web OpenLayers</span>
+                </div>
+            </div>
+
+            <div class="resource-symbol" aria-hidden="true">
+                ◎
+            </div>
+
+        </div>
+    </section>
+
+    <!-- OFFICIAL WEBSITE -->
+
+    <section class="official-section">
+        <div class="container">
+
+            <h2>Government Information</h2>
+
+            <p>
+                Visit the official Local Self Government Department
+                website for information on local governance in Kerala.
+            </p>
+
+            <a class="text-link"
+               href="https://lsgkerala.gov.in/en"
+               target="_blank"
+               rel="noopener noreferrer">
+                Visit Local Self Government Department, Kerala ↗️
+            </a>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+
+    <footer id="contact">
+        <div class="container">
+
+            <div class="footer-main">
+
+                <div>
+                    <div class="footer-title">
+                        KALADY WEBGIS
+                    </div>
+
+                    <p class="footer-text">
+                        Geographical Resource Mapping<br>
+                        Kalady Grama Panchayat<br>
+                        Ernakulam, Kerala
+                    </p>
+                </div>
+
+                <div class="footer-contact">
+                    <div class="footer-title">Project Contact</div>
+
+                    <p class="footer-text">Achu Reju</p>
+
+                    <a href="mailto:achureju2005@gmail.com">
+                        achureju2005@gmail.com
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <span>
+                    &copy; 2026 Kalady Geographical Resource Mapping
+                </span>
+
+                <span>
+                    Educational WebGIS Project &middot; Achu Reju
+                </span>
+            </div>
+
+        </div>
+    </footer>
+
+    <script src="network-manager.js"></script>
+</body>
+</html>
+
